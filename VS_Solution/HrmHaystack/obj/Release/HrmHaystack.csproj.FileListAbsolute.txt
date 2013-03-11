@@ -1,0 +1,10 @@
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\HrmHaystack.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\HrmHaystack.pdb
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\Assembly-CSharp.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\UnityEngine.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\Mono.Cecil.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\Assembly-CSharp-firstpass.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\Mono.Security.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\bin\Release\Assembly-CSharp.xml
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\obj\Release\HrmHaystack.dll
+D:\Users\hermes\Documents\Visual Studio 2012\Projects\KSP\0.18.4\HrmHaystack\HrmHaystack\obj\Release\HrmHaystack.pdb
