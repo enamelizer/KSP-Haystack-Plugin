@@ -305,10 +305,12 @@ namespace HrmHaystack
 			}
 
 			GUILayout.BeginHorizontal();
+			/*
 			if (tmpVesselSelected != null)
 			{
 				GUILayout.Label(string.Format("Selected: {0}", tmpVesselSelected.vesselName));
 			}
+			*/
 			GUILayout.FlexibleSpace();
 			if (tmpVesselSelected != null && FlightGlobals.ActiveVessel != tmpVesselSelected)
 			{
@@ -321,8 +323,8 @@ namespace HrmHaystack
 				MapView.MapCamera.SetDistance(10000.0F);
 				MapView.MapCamera.transform.LookAt(v.GetWorldPos3D());
 				*/
-				FlightGlobals.ActiveVessel.orbitTargeter.SetTarget(tmpVesselSelected.orbitDriver);
-				//FlightGlobals.fetch.SetVesselTarget(v); // ?
+				//FlightGlobals.ActiveVessel.orbitTargeter.SetTarget(tmpVesselSelected.orbitDriver); // nope
+				FlightGlobals.fetch.SetVesselTarget(tmpVesselSelected);
 #if DEBUG
 				HSUtils.Log(string.Format("setting target: {0} {1}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
 #endif
