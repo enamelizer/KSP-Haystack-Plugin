@@ -36,7 +36,7 @@ namespace HrmHaystack
 		public override void OnLoad(ConfigNode node)
 		{
 #if DEBUG
-			Debug.Log("Module loaded");
+			HSUtils.Log("Module loaded");
 #endif
 			//this.enabled = true;
 			HSSettings.Load();
@@ -46,7 +46,7 @@ namespace HrmHaystack
 		{
 			HSSettings.Save();
 #if DEBUG
-			Debug.Log("Module saved");
+			HSUtils.Log("Module saved");
 #endif
 		}
 
@@ -79,17 +79,18 @@ namespace HrmHaystack
 		// Game object that keeps us running
 		public static GameObject gameObjectInstance;
 
-		// 4 times a second
-		//		private const float updateInterval = 0.25F;
-		private const float updateInterval = 5F;
-
 		public static List<HSVesselType> vesselTypesList = new List<HSVesselType>();
 
 		private static Vessel switchToMe = null;
 		private static List<Vessel> hsVesselList = null;
 		private static List<Vessel> filteredVesselList = null;
 
+		// Resizeable window vars
 		private bool winHidden = true;
+		private static Rect _winRect;
+		
+		// Search text
+		string filterVar = "";
 
 		public HSBehaviour()
 		{
@@ -101,12 +102,10 @@ namespace HrmHaystack
 #if DEBUG
 			HSUtils.Log("awake Behaviour, DLL loaded");
 #endif
-			//btnIco = new Texture2D(32, 32, TextureFormat.ARGB32, false);
-			//btnIco.LoadImage(KSP.IO.File.ReadAllBytes<HrmHaystack>("custom_icon.png"));
 
+			// Populate list of vessel types and load textures - should happen once
 			HSResources.LoadTextures();
 
-			// Populate list of vessel types and load icon textures
 			HSResources.PopulateVesselTypes(ref vesselTypesList);
 			vesselTypesList.Sort(new HSUtils.SortByWeight());
 
@@ -114,20 +113,23 @@ namespace HrmHaystack
 			
 			DontDestroyOnLoad(this);
 			CancelInvoke();
-	//		InvokeRepeating("BehaviourUpdate", updateInterval, updateInterval);
 
-			InvokeRepeating("MainHSActivity", 1.0F, 1.0F);
+			InvokeRepeating("MainHSActivity", 5.0F, 5.0F); // Refresh from time to time just in case
 			InvokeRepeating("RefreshDataSaveSettings", 0, 30.0F);
 		}
 
+		/// <summary>
+		/// Refresh list of vessels
+		/// </summary>
 		private static void RefetchVesselList()
 		{
-			// Refresh list of vessels
 			hsVesselList = (FlightGlobals.fetch == null ? FlightGlobals.Vessels : FlightGlobals.fetch.vessels);
-			
 			// hsVesselList = FlightGlobals.fetch.vessels; // ?
 		}
 
+		/// <summary>
+		/// Every second refresh seems to be enough. Data filtering here and switching to selected vessel too.
+		/// </summary>
 		public void MainHSActivity()
 		{
 			if (IsMapMode)
@@ -185,6 +187,9 @@ namespace HrmHaystack
 			}
 		}
 
+		/// <summary>
+		/// Function called every 30 seconds
+		/// </summary>
 		public void RefreshDataSaveSettings()
 		{
 			if (IsMapMode)
@@ -196,16 +201,9 @@ namespace HrmHaystack
 			}
 		}
 
-		public void BehaviourUpdate()
-		{
-			/*
-			if (FlightGlobals.currentMainBody != null)
-			{
-				Debug.Log("Haystack detected parent body: " + FlightGlobals.currentMainBody.bodyName);
-			}
-			*/
-		}
-
+		/// <summary>
+		/// Repaint GUI (only in map view condition inside)
+		/// </summary>
 		public void OnGUI()
 		{
 			if (IsMapMode)
@@ -213,10 +211,6 @@ namespace HrmHaystack
 				DrawGUI();
 			}
 		}
-
-		// resizeable window vars
-		private static Rect _winRect;
-		string filterVar = "";
 
 		public static Rect WinRect
 		{
@@ -232,13 +226,13 @@ namespace HrmHaystack
 				HSResources.LoadStyles();
 			}
 
-			//_winRect = GUILayout.Window(1823748, _winRect, WinGUI, "Haystack", winstyle, GUILayout.MinWidth(100), GUILayout.MinHeight(200), GUILayout.MaxWidth(Screen.width / 2), GUILayout.MaxHeight(Screen.height / 2));
 			_winRect.y = (winHidden) ? Screen.height - 1 : Screen.height - _winRect.height;
 			_winRect = GUILayout.Window(1823748, _winRect, MainWindowConstructor, string.Format("Haystack {0}", HSSettings.version), HSResources.winStyle, GUILayout.MinWidth(120), GUILayout.Height(300));
 			if (GUI.Button(new Rect(_winRect.x + (_winRect.width / 2 - 24), _winRect.y - 9, 48, 10), "", HSResources.buttonFoldStyle))
 			{
 				winHidden ^= true; // toggle window state
 				RefetchVesselList();
+				MainHSActivity();
 			}
 		}
 
@@ -249,22 +243,26 @@ namespace HrmHaystack
 			//get { return CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map; }
 		}
 
-		// for scrollview
+		// For the scrollview
 		private Vector2 scrollPos = Vector2.zero;
 		private Vector2 scrollPos2 = Vector2.zero;
 
+		// Voodoo magick to make GUI work properly without click-through
 		private Vessel tmpVesselSelected = null;
+		private Vessel tmpVesselPreSelected = null;
 
 		private void MainWindowConstructor(int windowID)
 		{
 			GUILayout.BeginVertical();
 
+			#region vessel types - horizontal
 			GUILayout.BeginHorizontal();
 			for (int iter = 0; iter < vesselTypesList.Count(); iter++ )
 			{
 				vesselTypesList.ElementAt(iter).visible = GUILayout.Toggle(vesselTypesList.ElementAt(iter).visible, vesselTypesList[iter].icon, HSResources.buttonVesselTypeStyle);
 			}
 			GUILayout.EndHorizontal();
+			#endregion vessel types
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Find:");
@@ -274,28 +272,47 @@ namespace HrmHaystack
 			// If there's anything to display, do it in a loop
 			if (filteredVesselList != null && filteredVesselList.Any())
 			{
-				scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+				#region scroller
+				scrollPos = GUILayout.BeginScrollView(scrollPos);
+				
+				GUILayout.BeginVertical();
+
+				bool btnclicked = false;
+				
 				foreach (Vessel v in filteredVesselList)
 				{
 					GUILayout.BeginVertical(v == tmpVesselSelected ? HSResources.buttonVesselListPressed : GUI.skin.button);
 					GUILayout.Label(v.vesselName, HSResources.textListHeaderStyle);
-					GUILayout.Label(string.Format ("{0}. {1}", v.vesselType.ToString(), Vessel.GetSituationString(v)), HSResources.textSituationStyle);
+					GUILayout.Label(string.Format("{0}. {1}{2}", v.vesselType.ToString(), Vessel.GetSituationString(v), (FlightGlobals.ActiveVessel == v && v != null) ? ". Currently active" : ""), HSResources.textSituationStyle);
 					GUILayout.EndVertical();
 
-					// If we hit this vertical layout, toggle its state and set selected vessel
-					Rect tmpRect = GUILayoutUtility.GetLastRect();
-					// if (Event.current != null && Event.current.type == EventType.Repaint && Input.GetMouseButtonDown(0) && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+					// First, determine which button was clicked within ScrollView and preselect vessel
 					if (Event.current != null && Event.current.type == EventType.Repaint && Input.GetMouseButtonDown(0))
 					{
+						Rect tmpRect = GUILayoutUtility.GetLastRect();
+
 						if (tmpRect.Contains(Event.current.mousePosition))
 						{
-							//Debug.Log("click detected at: " + v.vesselName);
-							tmpVesselSelected = (tmpVesselSelected == null || tmpVesselSelected != v) ? v : null; // set to current or reset
+							btnclicked = true;
+							tmpVesselPreSelected = v;
 						}
 					}
 				}
+				GUILayout.EndVertical();
 
 				GUILayout.EndScrollView();
+				#endregion scroller
+
+				// Now we can calculate scrollview dimensions. And if click was performed within this area, select temporary vessel
+				// Important: GetLastRect works properly only during Repaint event
+				if (Event.current != null && Event.current.type == EventType.Repaint && Input.GetMouseButtonDown(0))
+				{
+					Rect scrollerCoords = GUILayoutUtility.GetLastRect();
+					if (btnclicked && scrollerCoords.Contains(Event.current.mousePosition))
+					{
+						tmpVesselSelected = (tmpVesselSelected == null || tmpVesselSelected != tmpVesselPreSelected) ? tmpVesselPreSelected : null; // set to current or reset
+					}
+				}
 			}
 			else
 			{
@@ -304,18 +321,18 @@ namespace HrmHaystack
 				GUILayout.FlexibleSpace();
 			}
 
+			#region bottom buttons - horizontal
 			GUILayout.BeginHorizontal();
-			/*
-			if (tmpVesselSelected != null)
-			{
-				GUILayout.Label(string.Format("Selected: {0}", tmpVesselSelected.vesselName));
-			}
-			*/
+
 			GUILayout.FlexibleSpace();
-			if (tmpVesselSelected != null && FlightGlobals.ActiveVessel != tmpVesselSelected)
+
+			// Disable buttons for current vessel or nothing selected
+			if (tmpVesselSelected == null || FlightGlobals.ActiveVessel == tmpVesselSelected)
 			{
-				if (GUILayout.Button(HSResources.btnTarg, HSResources.buttonTargStyle))
-				{
+				GUI.enabled = false;
+			}
+			if (GUILayout.Button(HSResources.btnTarg, HSResources.buttonTargStyle))
+			{
 				//MapView.MapCamera.setTarget(MapView.MapCamera.targets[UnityEngine.Random.Range(0, MapView.MapCamera.targets.Count)].transform);
 				/*
 				MapView.MapCamera.AddTarget(v.transform);
@@ -334,12 +351,22 @@ namespace HrmHaystack
 #if DEBUG
 					HSUtils.Log(string.Format("about to switch to vessel: {0}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
 #endif
+					// Delayed switch to vessel
 					switchToMe = tmpVesselSelected;
 				}
-			}
+
+				GUI.enabled = true;
+
 			GUILayout.EndHorizontal();
+			#endregion bottom buttons
 
 			GUILayout.EndVertical();
+
+			// If user input detected, force data refresh
+			if (GUI.changed)
+			{
+				MainHSActivity();
+			}
 
 			GUI.DragWindow();
 		}

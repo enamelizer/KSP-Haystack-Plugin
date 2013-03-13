@@ -153,8 +153,8 @@ namespace HrmHaystack
 
 			// Main window
 			winStyle = new GUIStyle(GUI.skin.window);
-			winStyle.stretchWidth = true;
-			winStyle.stretchHeight = false;
+			// winStyle.stretchWidth = true;
+			// winStyle.stretchHeight = false;
 
 			// Switch to vessel button
 			buttonGoStyle = new GUIStyle(GUI.skin.button);
@@ -189,7 +189,7 @@ namespace HrmHaystack
 			// Each list item is actually a button
 			buttonVesselListName = new GUIStyle(GUI.skin.button);
 			buttonVesselListName.wordWrap = true;
-			buttonVesselListName.stretchWidth = true;
+			//buttonVesselListName.stretchWidth = true;
 			//buttonVesselListName.active.textColor = XKCDColors.GreenApple;
 
 			textListHeaderStyle = new GUIStyle(GUI.skin.label);
@@ -199,7 +199,7 @@ namespace HrmHaystack
 			textListHeaderStyle.fontStyle = FontStyle.Bold;
 			textListHeaderStyle.margin = new RectOffset(6, 6, 2, 0);
 			textListHeaderStyle.padding = new RectOffset(0, 0, 0, 0);
-			textListHeaderStyle.stretchWidth = true;
+			//textListHeaderStyle.stretchWidth = true;
 			textListHeaderStyle.wordWrap = true;
 
 			textSituationStyle = new GUIStyle(GUI.skin.label);
@@ -208,7 +208,7 @@ namespace HrmHaystack
 			textSituationStyle.fontStyle = FontStyle.Normal;
 			textSituationStyle.margin = new RectOffset(6, 6, 0, 1);
 			textSituationStyle.padding = new RectOffset(0, 0, 0, 0);
-			textSituationStyle.stretchWidth = true;
+			//textSituationStyle.stretchWidth = true;
 		}
 	}
 }

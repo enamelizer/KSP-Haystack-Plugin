@@ -44,7 +44,7 @@ namespace HrmHaystack
 		public static void Save()
 		{
 #if DEBUG
-			//HSUtils.Log("saving settings");
+			HSUtils.Log("saving settings");
 #endif
 			PluginConfiguration cfg = PluginConfiguration.CreateForType<HrmHaystack>();
 			cfg.SetValue("winPos", HSBehaviour.WinRect);
