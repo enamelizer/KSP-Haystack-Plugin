@@ -350,7 +350,7 @@ namespace HrmHaystack
 				if (GUILayout.Button(HSResources.btnGoHover, HSResources.buttonGoStyle))
 				{
 #if DEBUG
-					HSUtils.Log(string.Format("about to switch to vessel: {0}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
+					HSUtils.Log(string.Format("about to switch to vessel: {0} {1}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
 #endif
 					// Delayed switch to vessel
 					switchToMe = tmpVesselSelected;
