@@ -74,7 +74,8 @@ namespace HrmHaystack
 				LoadImage(ref btnGo, "button_go.png");
 				LoadImage(ref btnGoHover, "button_go_hover.png");
 				LoadImage(ref btnTarg, "button_targ.png");
-				LoadImage(ref btnTargHover, "button_targ_hover.png");
+				LoadImage(ref btnTargHover, "button_targ.png");
+				//LoadImage(ref btnTargHover, "button_targ_hover.png"); // TODO: Create hover image, it is missing
 				LoadImage(ref btnFold, "button_fold.png");
 				LoadImage(ref btnFoldHover, "button_fold_hover.png");
 			}
@@ -132,8 +133,7 @@ namespace HrmHaystack
 		/// <param name="filename">File name in images directory. Path is hardcoded: PluginData/HrmHaystack/images/</param>
 		private static void LoadImage(ref Texture2D targ, string filename)
 		{
-			WWW img = new WWW(string.Format("file://{0}PluginData/HrmHaystack/images/{1}", KSPUtil.ApplicationRootPath.Replace("\\", "/"), filename));
-			img.LoadImageIntoTexture(targ);
+			targ.LoadImage(KSP.IO.File.ReadAllBytes<HSBehaviour>(filename, null));
 		}
 
 		public static GUIStyle winStyle;
