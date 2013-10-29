@@ -74,6 +74,7 @@ namespace HrmHaystack
 	/// <summary>
 	///  This is the behaviour object that we hook events on to
 	/// </summary>
+	[KSPAddon(KSPAddon.Startup.Flight, true)]
 	public class HSBehaviour : MonoBehaviour
 	{
 		// Game object that keeps us running
