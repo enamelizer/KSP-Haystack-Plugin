@@ -47,7 +47,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "D:\Program Files (x86)\Kerbal\KSP0.18.4_testground\Plugins\"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(ProjectDir)..\..\GameData\HrmHaystack\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
