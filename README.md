@@ -17,4 +17,4 @@ Please provide as much detail as possible when reporting an issue. That said, if
 
 Licence
 -------
-This code is licenced under The MIT License (MIT).
+This code is licensed under The MIT License (MIT).
