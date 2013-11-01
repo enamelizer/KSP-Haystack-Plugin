@@ -239,7 +239,10 @@ namespace HrmHaystack
 
 		private static bool IsMapMode
 		{
-			get { return FlightGlobals.fetch != null && MapView.MapIsEnabled; }
+			get
+			{
+				return (HighLogic.LoadedScene == GameScenes.FLIGHT) && MapView.MapIsEnabled;
+			}
 			//get { return ((FlightGlobals.fetch != null) && (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map)); }
 			//get { return CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map; }
 		}
