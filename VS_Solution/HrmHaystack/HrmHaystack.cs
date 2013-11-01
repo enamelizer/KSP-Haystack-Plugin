@@ -29,49 +29,6 @@ namespace HrmHaystack
 	};
 
 	/// <summary>
-	/// Basic Part piece that creates the Classes that run in the background at all times
-	/// </summary>
-	public class HrmHaystack : PartModule
-	{
-		public override void OnLoad(ConfigNode node)
-		{
-#if DEBUG
-			HSUtils.Log("Module loaded");
-#endif
-			//this.enabled = true;
-			HSSettings.Load();
-		}
-
-		public override void OnSave(ConfigNode node)
-		{
-			HSSettings.Save();
-#if DEBUG
-			HSUtils.Log("Module saved");
-#endif
-		}
-
-		public override void OnAwake()
-		{
-#if DEBUG
-			HSUtils.Log("awake");
-#endif
-			if (HSBehaviour.gameObjectInstance == null)
-			{
-
-				HSBehaviour.gameObjectInstance = GameObject.Find("HSBehaviour") ?? new GameObject("HSBehaviour", typeof(HSBehaviour));
-#if DEBUG
-				HSUtils.Log("game object created");
-#endif
-			}
-		}
-
-		public override void OnFixedUpdate()
-		{
-			base.OnFixedUpdate();
-		}
-    }
-
-	/// <summary>
 	///  This is the behaviour object that we hook events on to
 	/// </summary>
 	[KSPAddon(KSPAddon.Startup.Flight, true)]

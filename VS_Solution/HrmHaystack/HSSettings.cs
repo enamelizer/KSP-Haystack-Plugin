@@ -20,7 +20,7 @@ namespace HrmHaystack
 #if DEBUG
 			HSUtils.Log("loading settings");
 #endif
-			PluginConfiguration cfg = PluginConfiguration.CreateForType<HrmHaystack>();
+			PluginConfiguration cfg = PluginConfiguration.CreateForType<HSBehaviour>();
 			cfg.load();
 
 			HSBehaviour.WinRect = cfg.GetValue<Rect>("winPos");
@@ -46,7 +46,7 @@ namespace HrmHaystack
 #if DEBUG
 			HSUtils.Log("saving settings");
 #endif
-			PluginConfiguration cfg = PluginConfiguration.CreateForType<HrmHaystack>();
+			PluginConfiguration cfg = PluginConfiguration.CreateForType<HSBehaviour>();
 			cfg.SetValue("winPos", HSBehaviour.WinRect);
 
 			foreach(HSVesselType type in HSBehaviour.vesselTypesList)
