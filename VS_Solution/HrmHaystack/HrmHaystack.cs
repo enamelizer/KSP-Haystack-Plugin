@@ -90,7 +90,7 @@ namespace HrmHaystack
 		/// </summary>
 		public void MainHSActivity()
 		{
-			if (IsMapMode)
+			if (IsFlightScene)
 			{
 				filteredVesselList = hsVesselList;
 
@@ -150,7 +150,7 @@ namespace HrmHaystack
 		/// </summary>
 		public void RefreshDataSaveSettings()
 		{
-			if (IsMapMode)
+			if (IsFlightScene)
 			{
 				RefetchVesselList();
 
@@ -164,7 +164,7 @@ namespace HrmHaystack
 		/// </summary>
 		public void OnGUI()
 		{
-			if (IsMapMode)
+			if (IsFlightScene)
 			{
 				DrawGUI();
 			}
@@ -194,14 +194,20 @@ namespace HrmHaystack
 			}
 		}
 
-		private static bool IsMapMode
+		//private static bool IsMapMode
+		//{
+		//	get
+		//	{
+		//		return (HighLogic.LoadedScene == GameScenes.FLIGHT) && MapView.MapIsEnabled;
+		//	}
+		//}
+
+		private static bool IsFlightScene
 		{
 			get
 			{
-				return (HighLogic.LoadedScene == GameScenes.FLIGHT) && MapView.MapIsEnabled;
+				return HighLogic.LoadedScene == GameScenes.FLIGHT;
 			}
-			//get { return ((FlightGlobals.fetch != null) && (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map)); }
-			//get { return CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map; }
 		}
 
 		// For the scrollview
