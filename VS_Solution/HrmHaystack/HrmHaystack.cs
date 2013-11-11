@@ -210,13 +210,13 @@ namespace HrmHaystack
 			}
 		}
 
-		//private static bool IsMapMode
-		//{
-		//	get
-		//	{
-		//		return (HighLogic.LoadedScene == GameScenes.FLIGHT) && MapView.MapIsEnabled;
-		//	}
-		//}
+		private static bool IsMapMode
+		{
+			get
+			{
+				return (HighLogic.LoadedScene == GameScenes.FLIGHT) && MapView.MapIsEnabled;
+			}
+		}
 
 		private static bool IsFlightScene
 		{
@@ -339,16 +339,32 @@ namespace HrmHaystack
 					Rect scrollerCoords = GUILayoutUtility.GetLastRect();
 					if (btnclicked && scrollerCoords.Contains(Event.current.mousePosition))
 					{
-						if (typeSelected == "vessel")
+						int instanceID = -1;
+
+						if (typeSelected == "vessel") // handle vessel selected
 						{
-							tmpVesselSelected = (tmpVesselSelected == null || tmpVesselSelected != tmpVesselPreSelected) ? tmpVesselPreSelected : null; // set to current or reset
+							if (tmpVesselSelected == null || tmpVesselSelected != tmpVesselPreSelected)
+							{
+								tmpVesselSelected = tmpVesselPreSelected;
+								instanceID = tmpVesselSelected.GetInstanceID();
+							}
+
 							tmpBodySelected = null;
 						}
-						else if (typeSelected == "body")
+						else if (typeSelected == "body") // handle body selected
 						{
-							tmpBodySelected = (tmpBodySelected == null || tmpBodySelected != tmpBodyPreSelected) ? tmpBodyPreSelected : null; // set to current or reset
+							if (tmpBodySelected == null || tmpBodySelected != tmpBodyPreSelected)
+							{
+								tmpBodySelected = tmpBodyPreSelected;
+								instanceID = tmpBodySelected.GetInstanceID();
+							}
+
 							tmpVesselSelected = null;
 						}
+
+						// focus the map object
+						if (instanceID != -1)
+							FocusMapObject(instanceID);
 					}
 				}
 			}
@@ -449,6 +465,34 @@ namespace HrmHaystack
 			}
 
 			return returnVal;
+		}
+
+		/// <summary>
+		/// Focuses the map object matching the intanceID passed in
+		/// if the scene is map mode.
+		/// Searches both vessels and bodies.
+		/// Assumes the instance ID is valid.
+		/// </summary>
+		/// <param name="instanceID"></param>
+		private void FocusMapObject(int instanceID)
+		{
+			// focus on the object
+			if (IsMapMode == true)
+			{
+				foreach (var mapObject in MapView.MapCamera.targets)
+				{
+					if (mapObject.vessel != null && mapObject.vessel.GetInstanceID() == instanceID)
+					{
+						MapView.MapCamera.SetTarget(mapObject);
+						break;
+					}
+					else if (mapObject.celestialBody != null && mapObject.celestialBody.GetInstanceID() == instanceID)
+					{
+						MapView.MapCamera.SetTarget(mapObject);
+						break;
+					}
+				}
+			}
 		}
 	}
 
