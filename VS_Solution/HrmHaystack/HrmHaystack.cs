@@ -245,21 +245,31 @@ namespace HrmHaystack
 			GUILayout.BeginHorizontal();
 
 			// Vessels
-			for (int iter = 0; iter < vesselTypesList.Count(); iter++ )
+			for (int i = 0; i < vesselTypesList.Count(); i++ )
 			{
-				vesselTypesList.ElementAt(iter).visible = GUILayout.Toggle(vesselTypesList.ElementAt(iter).visible, vesselTypesList[iter].icon, HSResources.buttonVesselTypeStyle);
+				vesselTypesList[i].visible = GUILayout.Toggle(vesselTypesList[i].visible, new GUIContent(vesselTypesList[i].icon, vesselTypesList[i].name), HSResources.buttonVesselTypeStyle);
 			}
 
 			// Bodies
-			showCelestialBodies = GUILayout.Toggle(showCelestialBodies, "P", HSResources.buttonVesselTypeStyle);
+			showCelestialBodies = GUILayout.Toggle(showCelestialBodies, new GUIContent("P", "Bodies"), HSResources.buttonVesselTypeStyle);
 
 			GUILayout.EndHorizontal();
+
 			#endregion vessel types
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Find:");
 			filterVar = GUILayout.TextField(filterVar, GUILayout.MinWidth(50.0F), GUILayout.ExpandWidth(true));
 			GUILayout.EndHorizontal();
+
+			// handle tooltips here so it paints over the find entry
+			if (GUI.tooltip != "")
+			{
+				// get mouse position
+				var mousePosition = Event.current.mousePosition;
+				var width = GUI.tooltip.Length * 11;
+				GUI.Box(new Rect(mousePosition.x - 30, mousePosition.y - 30, width, 25), GUI.tooltip);
+			}
 
 			// If there's anything to display, do it in a loop
 			if ((filteredVesselList != null && filteredVesselList.Any()) || showCelestialBodies == true)
@@ -366,12 +376,12 @@ namespace HrmHaystack
 				if (typeSelected == "vessel")
 				{
 					FlightGlobals.fetch.SetVesselTarget(tmpVesselSelected);
-					HSUtils.Log(string.Format("setting target: {0} {1}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
+					//HSUtils.Log(string.Format("setting target: {0} {1}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
 				}
 				else if (typeSelected == "body")
 				{
 					FlightGlobals.fetch.SetVesselTarget(tmpBodySelected);
-					HSUtils.Log(string.Format("setting target: {0} {1}", tmpBodySelected.GetInstanceID(), tmpBodySelected.name));
+					//HSUtils.Log(string.Format("setting target: {0} {1}", tmpBodySelected.GetInstanceID(), tmpBodySelected.name));
 				}
 			}
 
@@ -388,7 +398,7 @@ namespace HrmHaystack
 			{
 				if (typeSelected == "vessel")
 				{
-					HSUtils.Log(string.Format("about to switch to vessel: {0} {1}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
+					//HSUtils.Log(string.Format("about to switch to vessel: {0} {1}", tmpVesselSelected.GetInstanceID(), tmpVesselSelected.vesselName));
 					// Delayed switch to vessel
 					switchToMe = tmpVesselSelected;
 				}
@@ -417,12 +427,12 @@ namespace HrmHaystack
 			if (typeSelected == "vessel")
 			{
 				returnVal = (tmpVesselSelected == null || FlightGlobals.ActiveVessel == tmpVesselSelected);
-				HSUtils.Log(string.Format("IsTargetButtonDisabled: {0} {1} {2} {3}", returnVal, typeSelected, tmpVesselSelected, FlightGlobals.ActiveVessel));
+				//HSUtils.Log(string.Format("IsTargetButtonDisabled: {0} {1} {2} {3}", returnVal, typeSelected, tmpVesselSelected, FlightGlobals.ActiveVessel));
 			}
 			else if (typeSelected == "body")
 			{
 				returnVal = (tmpBodySelected == null || FlightGlobals.currentMainBody == tmpBodySelected);
-				HSUtils.Log(string.Format("IsTargetButtonDisabled: {0} {1} {2} {3}", returnVal, typeSelected, tmpBodySelected, FlightGlobals.currentMainBody));
+				//HSUtils.Log(string.Format("IsTargetButtonDisabled: {0} {1} {2} {3}", returnVal, typeSelected, tmpBodySelected, FlightGlobals.currentMainBody));
 			}
 
 			return returnVal;
@@ -435,7 +445,7 @@ namespace HrmHaystack
 			if (typeSelected == "vessel")
 			{
 				returnVal = (tmpVesselSelected == null || FlightGlobals.ActiveVessel == tmpVesselSelected);
-				HSUtils.Log(string.Format("IsFlyButtonDisabled: {0} {1} {2} {3}", typeSelected, returnVal, tmpVesselSelected, FlightGlobals.ActiveVessel));
+				//HSUtils.Log(string.Format("IsFlyButtonDisabled: {0} {1} {2} {3}", typeSelected, returnVal, tmpVesselSelected, FlightGlobals.ActiveVessel));
 			}
 
 			return returnVal;
