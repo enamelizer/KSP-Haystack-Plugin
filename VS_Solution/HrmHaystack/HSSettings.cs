@@ -54,6 +54,8 @@ namespace HrmHaystack
 				cfg.SetValue("type_visible_" + type.name, type.visible);
 			}
 
+			cfg.SetValue("bodies_visible", HSBehaviour.showCelestialBodies);
+
 			cfg.save();
 		}
 		
