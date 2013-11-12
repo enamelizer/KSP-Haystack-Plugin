@@ -55,6 +55,7 @@ namespace HrmHaystack
 		public static Texture2D btnTargHover = new Texture2D(32, 32, TextureFormat.ARGB32, false);
 		public static Texture2D btnFold = new Texture2D(48, 16, TextureFormat.ARGB32, false);
 		public static Texture2D btnFoldHover = new Texture2D(48, 16, TextureFormat.ARGB32, false);
+		public static Texture2D btnBodies = new Texture2D(32, 32, TextureFormat.ARGB32, false);
 
 		/// <summary>
 		/// Load images into corresponding textures
@@ -78,6 +79,7 @@ namespace HrmHaystack
 				//LoadImage(ref btnTargHover, "button_targ_hover.png"); // TODO: Create hover image, it is missing
 				LoadImage(ref btnFold, "button_fold.png");
 				LoadImage(ref btnFoldHover, "button_fold_hover.png");
+				LoadImage(ref btnBodies, "button_bodies.png"); // handled separate from vessels
 			}
 			catch (Exception e)
 			{

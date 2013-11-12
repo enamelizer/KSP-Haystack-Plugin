@@ -251,7 +251,7 @@ namespace HrmHaystack
 			}
 
 			// Bodies
-			showCelestialBodies = GUILayout.Toggle(showCelestialBodies, new GUIContent("P", "Bodies"), HSResources.buttonVesselTypeStyle);
+			showCelestialBodies = GUILayout.Toggle(showCelestialBodies, new GUIContent(HSResources.btnBodies, "Bodies"), HSResources.buttonVesselTypeStyle);
 
 			GUILayout.EndHorizontal();
 
