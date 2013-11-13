@@ -47,6 +47,9 @@ namespace HrmHaystack
 		private static List<CelestialBody> filteredBodyList;
 		public static bool showCelestialBodies = false;
 
+		// count types
+		private static Dictionary<string, int> typeCount;
+
 		// Resizeable window vars
 		private bool winHidden = true;
 		private static Rect _winRect;
@@ -72,6 +75,7 @@ namespace HrmHaystack
 			vesselTypesList.Sort(new HSUtils.SortByWeight());
 
 			celestialBodyList = new List<CelestialBody>();
+			typeCount = new Dictionary<string, int>();
 
 			HSSettings.Load();
 			
@@ -88,7 +92,18 @@ namespace HrmHaystack
 		private static void RefetchVesselList()
 		{
 			hsVesselList = (FlightGlobals.fetch == null ? FlightGlobals.Vessels : FlightGlobals.fetch.vessels);
-			// hsVesselList = FlightGlobals.fetch.vessels; // ?
+
+			// count vessel types
+			typeCount.Clear();
+			foreach (var vessel in hsVesselList)
+			{
+				var typeString = vessel.vesselType.ToString();
+
+				if (typeCount.ContainsKey(typeString))
+					typeCount[typeString]++;
+				else
+					typeCount.Add(typeString, 1);
+			}
 		}
 
 		/// <summary>
@@ -247,7 +262,12 @@ namespace HrmHaystack
 			// Vessels
 			for (int i = 0; i < vesselTypesList.Count(); i++ )
 			{
-				vesselTypesList[i].visible = GUILayout.Toggle(vesselTypesList[i].visible, new GUIContent(vesselTypesList[i].icon, vesselTypesList[i].name), HSResources.buttonVesselTypeStyle);
+				var typeString = vesselTypesList[i].name;
+
+				if (typeCount.ContainsKey(typeString))
+					typeString += String.Format(" ({0})", typeCount[typeString]);
+
+				vesselTypesList[i].visible = GUILayout.Toggle(vesselTypesList[i].visible, new GUIContent(vesselTypesList[i].icon, typeString), HSResources.buttonVesselTypeStyle);
 			}
 
 			// Bodies
