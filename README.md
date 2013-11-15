@@ -5,6 +5,11 @@ Plugin for [Kerbal Space Program](http://www.kerbalspaceprogram.com/) which help
 
 Original code written by hermes-jr, with additions for compatibility by enamelizer.
 
+Releases
+------------------
+The currently reelased version can be found at https://github.com/enamelizer/KSP-Haystack-Plugin/releases
+or at http://kerbalspaceport.com/haystack2/
+
 Building
 --------
 1. Add references to the Assembly-CSharp and UnityEngine assemblies from the version of KSP you wish to target. (A plugin build targeted to one version may not work on another, even if no code changes are necessary for compatibility.)
