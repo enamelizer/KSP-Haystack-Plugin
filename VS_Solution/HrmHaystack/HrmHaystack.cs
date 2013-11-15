@@ -45,7 +45,7 @@ namespace HrmHaystack
 
 		private static List<CelestialBody> celestialBodyList;
 		private static List<CelestialBody> filteredBodyList;
-		public static bool showCelestialBodies = false;
+		public static bool showCelestialBodies = true;
 
 		// count types
 		private static Dictionary<string, int> typeCount;
