@@ -1,3 +1,6 @@
+Development has been taken over by qberticus and can be found here: https://github.com/qberticus/HaystackContinued
+
+
 KSP-Haystack-Plugin
 ===================
 
