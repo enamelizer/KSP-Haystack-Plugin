@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("HrmHaystack")]
-[assembly: AssemblyCopyright("Copyright © 2013 hermes-jr, Aaron DeMarre")]
+[assembly: AssemblyCopyright("Copyright © 2013 hermes-jr, enamelizer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
