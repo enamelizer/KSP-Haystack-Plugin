@@ -6,7 +6,7 @@ KSP-Haystack-Plugin
 
 Plugin for [Kerbal Space Program](http://www.kerbalspaceprogram.com/) which helps to easily switch vessels and targets.
 
-Original code written by hermes-jr, with additions for compatibility by Aaron DeMarre.
+Original code written by hermes-jr, with additions for compatibility by enamelizer.
 
 
 Building
